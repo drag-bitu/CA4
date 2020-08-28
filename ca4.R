@@ -6,7 +6,7 @@ str(Belfast_Crm)
 library("zoo")
 Belfast_Crm$ Date <- as.Date(as.yearmon(Belfast_Crm$Date, format = "%Y-%m"))
 #Removing the unwanted columns 
-Belfast_Crm <- Belfast_Crm[ -c(1, 2, 4:6, 12) ]
+Belfast_Crm <- Belfast_Crm[ -c(1, 2, 4:5, 12) ]
 #Moving the Date Column to first
 Belfast_Crm <- Belfast_Crm[,c(2,1:ncol(Belfast_Crm)-1)]
 
@@ -216,6 +216,8 @@ dealt_rate_test <- window(x = Dealt_Rate, start=c(2017))
 dealt_rate_train
 dealt_rate_test
 
+fit <- arima(dealt_rate_train, c(1,0,1))
+fit
 
 fit <- arima(dealt_rate_train, c(2,1,3), seasonal = list(order = c(2,1,3), period = 12))
 fit
@@ -228,14 +230,14 @@ predict_auto_ARIMA <- forecast(auto_arima, 3 * 12)
 predict_auto_ARIMA
 
 
-precict_manual_ARIMA <- forecast(fit, 3 * 12)
-precict_manual_ARIMA
-
+predict_manual_ARIMA <- forecast(fit, 1 * 1)
+predict_manual_ARIMA
+ 
 
 
 # make actuals_predicted dataframe
 # for manual ARIMA
-actuals_predictions <- data.frame(cbind(actuals = dealt_rate_test, predicted = precict_manual_ARIMA))
+actuals_predictions <- data.frame(cbind(actuals = dealt_rate_test, predicted = predict_manual_ARIMA))
 head(actuals_predictions)
 
 
